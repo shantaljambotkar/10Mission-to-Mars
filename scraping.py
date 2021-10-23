@@ -32,7 +32,7 @@ def mars_news(browser):
 
     # Scrape Mars News
     # Visit the mars nasa news site
-    url = 'https://data-class-mars.s3.amazonaws.com/Mars/index.html'
+    url = 'https://redplanetscience.com/'
     browser.visit(url)
 
     # Optional delay for loading the page
@@ -58,7 +58,7 @@ def mars_news(browser):
 
 def featured_image(browser):
     # Visit URL
-    url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/index.html'
+    url = 'https://spaceimages-mars.com'
     browser.visit(url)
 
     # Find and click the full image button
@@ -83,11 +83,9 @@ def featured_image(browser):
     return img_url
 
 def mars_facts():
-    # Add try/except for error handling
     try:
-        # Use 'read_html' to scrape the facts table into a dataframe
-        df = pd.read_html('https://data-class-mars-facts.s3.amazonaws.com/Mars_Facts/index.html')[0] # asking pandas read to get the first table it encounters and 
-                                                        #store it as a df
+        #use read_html to scrape the facts table into a datafrane
+        df = pd.read_html('https://galaxyfacts-mars.com')[0] # asking pandas read to get the first table it encounters and store it as a df
 
     except BaseException:
         return None
@@ -95,10 +93,9 @@ def mars_facts():
     # Assign columns and set index of dataframe
     df.columns=['Description', 'Mars', 'Earth']
     df.set_index('Description', inplace=True)
-
+    
     # Convert dataframe into HTML format, add bootstrap
-     #return df.to_html(classes="table table-striped")
-    return df.to_html()
+    return df.to_html() 
 
 if __name__ == "__main__":
 
