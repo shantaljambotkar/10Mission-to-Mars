@@ -12,12 +12,14 @@ mongo = PyMongo(app)
 @app.route("/")  #homepage
 def index():
    mars = mongo.db.mars.find_one()  # PyMongo to find the "mars" collection in our database
+   print(mars)
    return render_template("index.html", mars=mars) #tells Flask to return an HTML template using an index.html file and tells Python to use the "mars" collection in MongoDB
 
 @app.route("/scrape")
 def scrape():
    mars = mongo.db.mars
    mars_data = scraping.scrape_all()
+   print(mars_data)
    mars.update({}, mars_data, upsert=True) #Upsert indicates to Mongo to create a new document if one doesn't already exist, and new data will always be saved
    return redirect('/', code=302)
 

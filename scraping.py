@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup as soup
 import pandas as pd
 import datetime as dt
 from webdriver_manager.chrome import ChromeDriverManager
+import pdb
 
 
 def scrape_all():
@@ -20,6 +21,7 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemisphere_url_title": hem_data(browser),
         "last_modified": dt.datetime.now()
     }
 
@@ -83,19 +85,52 @@ def featured_image(browser):
     return img_url
 
 def mars_facts():
+    #print('------------------------------------------------------------------------------------------------------------------------------')
     try:
         #use read_html to scrape the facts table into a datafrane
+        #print('-------################################################################################################--------------------')
         df = pd.read_html('https://galaxyfacts-mars.com')[0] # asking pandas read to get the first table it encounters and store it as a df
+        #pdb.set_trace()
 
-    except BaseException:
+    except BaseException as e:
+        print(e)
         return None
 
     # Assign columns and set index of dataframe
     df.columns=['Description', 'Mars', 'Earth']
     df.set_index('Description', inplace=True)
+
+    # pdb.set_trace()
     
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html() 
+
+def hem_data(browser):
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+    html = browser.html
+    soups = soup(html, 'html.parser')
+
+    hemisphere_image_urls = []
+
+    for i in range(4):
+    #create empty dictionary
+        hemispheres = {}
+        
+        #navigating page
+        browser.find_by_css('a.product-item h3')[i].click()
+        sample = browser.find_link_by_text('Sample').first
+        
+        #getting images and titles
+        img_url = sample['href']
+        title = browser.find_by_css("h2.title").text
+        hemispheres["img_url"] = img_url
+        hemispheres["title"] = title
+        
+        #adding dictionary and resetting bowerser to previous page
+        hemisphere_image_urls.append(hemispheres)
+        browser.back()
+        return hemisphere_image_urls
 
 if __name__ == "__main__":
 
