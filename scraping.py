@@ -122,15 +122,17 @@ def hem_data(browser):
         sample = browser.find_link_by_text('Sample').first
         
         #getting images and titles
+        # print("AA")
         img_url = sample['href']
         title = browser.find_by_css("h2.title").text
+        # print("BB")
         hemispheres["img_url"] = img_url
         hemispheres["title"] = title
         
         #adding dictionary and resetting bowerser to previous page
         hemisphere_image_urls.append(hemispheres)
         browser.back()
-        return hemisphere_image_urls
+    return hemisphere_image_urls
 
 if __name__ == "__main__":
 

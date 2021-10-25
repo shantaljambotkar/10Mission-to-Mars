@@ -50,16 +50,21 @@
     </div>
     <!-- Hemisphere detials -->
     <div class="row" id="hemisphere-details">
-      <h2> Mars Hemisphere details</h2>
+        <h2 class="text-center">Mars Hemispheres</h2>
                 {% for hemisphere in mars.hemisphere_url_title %}
-                  <div class="col-xs-4"></div>
-                  <img src= "{{hemisphere.img_url}}"
-                  width="300" 
-                  height="300"/>
-                  <li>{{hemisphere.title}}</li> 
+                  <div class="col-md-6"></div>
+                  <div id="thumb">
+                    <img src= "{{hemisphere.img_url}}"
+                    style="object-fit:contain;
+                            width:200px;
+                            height:300px;
+                            border: solid 1px #CCC"
+                    alt="Responsive image" 
+                    class="img-responsive"/>
+                    <figcaption>{{hemisphere.title}}</figcaption> 
+                  </div> 
                 {%endfor%}
     </div> 
-
   </div>
  </body>
 </html>
